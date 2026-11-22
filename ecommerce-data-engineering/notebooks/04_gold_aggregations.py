@@ -440,7 +440,8 @@ def run_gold_pipeline(
         Mapping of Gold table names to written row counts.
     """
     logger.info("Starting Gold aggregation pipeline in %s.%s", catalog, schema)
-    enriched_df = spark.table(get_silver_table("orders_enriched", catalog, schema)).cache()
+    # Note: Do not call .cache()/.unpersist() so the notebook runs cleanly on Databricks Serverless
+    enriched_df = spark.table(get_silver_table("orders_enriched", catalog, schema))
 
     gold_builders: Dict[str, DataFrame] = {
         "daily_sales": build_gold_daily_sales(enriched_df),
@@ -458,8 +459,6 @@ def run_gold_pipeline(
     for table_key, df in gold_builders.items():
         target_table = get_gold_table(table_key, catalog=catalog, schema=schema)
         summary[target_table] = write_gold_delta_table(df, target_table)
-
-    enriched_df.unpersist()
 
     print(f"\n{'=' * 66}")
     print(f"GOLD AGGREGATIONS COMPLETE | Tables Written: {len(summary)}")
