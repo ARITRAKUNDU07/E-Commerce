@@ -242,7 +242,7 @@ def write_bronze_delta_table(
         .saveAsTable(target_table)
     )
     row_count = df.sparkSession.table(target_table).count()
-    logger.info("Wrote Bronze table %-48s | rows: %10,d", target_table, row_count)
+    logger.info("Wrote Bronze table %-48s | rows: %10s", target_table, f"{row_count:,d}")
     print(f"[BRONZE] {target_table:<48} -> {row_count:>10,d} rows")
     return row_count
 
