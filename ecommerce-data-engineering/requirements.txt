@@ -1,0 +1,9 @@
+# Core PySpark & Delta Lake (for local development and unit testing)
+pyspark>=3.5.0,<4.0.0
+delta-spark>=3.1.0,<4.0.0
+
+# Testing
+pytest>=8.0.0
+
+# Code Quality & Typing
+ruff>=0.4.0
